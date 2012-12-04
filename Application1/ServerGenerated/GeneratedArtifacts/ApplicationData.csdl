@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Namespace="ApplicationData" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <Association Name="Person_Lab">
+    <End Role="Person" Type="ApplicationData.Person" Multiplicity="1" />
+    <End Role="Lab" Type="ApplicationData.Lab" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Lab">
+        <PropertyRef Name="Person_Lab" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Lab">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="DateIssued" Type="DateTime" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="BloodCellCount" Type="Int32" ConcurrencyMode="Fixed" />
+    <Property Name="EyeLashes" Type="Decimal" Precision="18" Scale="2" ConcurrencyMode="Fixed" />
+    <Property Name="LuckyNumber" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Person_Lab" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="Person" Relationship="ApplicationData.Person_Lab" ToRole="Person" FromRole="Lab" />
+  </EntityType>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="Labs" Relationship="ApplicationData.Person_Lab" ToRole="Lab" FromRole="Person" />
+  </EntityType>
+  <EntityContainer Name="ApplicationDataObjectContext">
+    <EntitySet Name="Labs" EntityType="ApplicationData.Lab" />
+    <EntitySet Name="People" EntityType="ApplicationData.Person" />
+    <AssociationSet Name="Person_Lab" Association="ApplicationData.Person_Lab">
+      <End Role="Person" EntitySet="People" />
+      <End Role="Lab" EntitySet="Labs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

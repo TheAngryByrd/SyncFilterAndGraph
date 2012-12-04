@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ApplicationDataStore" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ApplicationDataStore">
+    <EntitySet Name="Labs" EntityType="ApplicationDataStore.Lab" store:Type="Tables" Schema="dbo" Table="Labs" />
+    <EntitySet Name="People" EntityType="ApplicationDataStore.Person" store:Type="Tables" Schema="dbo" Table="People" />
+    <AssociationSet Name="Person_Lab" Association="ApplicationDataStore.Person_Lab">
+      <End Role="Person" EntitySet="People" />
+      <End Role="Lab" EntitySet="Labs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Lab">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="DateIssued" Type="datetime" Nullable="false" />
+    <Property Name="BloodCellCount" Type="int" />
+    <Property Name="EyeLashes" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="LuckyNumber" Type="int" Nullable="false" />
+    <Property Name="Person_Lab" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <Association Name="Person_Lab">
+    <End Role="Person" Type="ApplicationDataStore.Person" Multiplicity="1" />
+    <End Role="Lab" Type="ApplicationDataStore.Lab" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Lab">
+        <PropertyRef Name="Person_Lab" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
