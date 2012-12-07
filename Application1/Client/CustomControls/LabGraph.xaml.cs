@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -59,9 +60,9 @@ namespace LightSwitchApplication.CustomControls
             Redraw();
         }
 
-        void Redraw()
+        public void Redraw()
         {
-          
+
             
             this.LabChart.Series.Clear();
             IEnumerable<CheckBox> children = this.Checklist.FindVisualChildren<CheckBox>();;
@@ -77,12 +78,11 @@ namespace LightSwitchApplication.CustomControls
                     lineSeries.Name = contentPath;
                     lineSeries.IndependentValuePath = independentPath;
                     lineSeries.DependentValuePath = contentPath;                 
-
+            
                     //Only bind labs that aren't null, otherwise the graph shows zero for that day
-                    var itemList = new List<Lab>();
-                    itemList.AddRange(Labs.Where(lab => lab.GetPropertyValue(contentPath) != null));   
-                    //lineSeries.ItemsSource = itemList;
-                    lineSeries.ItemsSource = Labs;
+        
+                    lineSeries.ItemsSource = Labs.Where(lab => lab.GetPropertyValue(contentPath) != null);
+                    //lineSeries.ItemsSource = Labs;
                     
                     this.LabChart.Series.Add(lineSeries);
                 }
